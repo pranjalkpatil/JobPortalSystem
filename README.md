@@ -1,0 +1,1 @@
+Developed a full-stack Job Portal System using Spring Boot, Thymeleaf, and MySQL with role-based access (User/Recruiter/Admin), job posting and application workflows, resume upload, profile management, and secure email-based password recovery.
