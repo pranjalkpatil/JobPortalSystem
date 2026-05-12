@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body class="auth-page">
+
+<div class="auth-container">
+
+    <h2>Login</h2>
+
+    <form th:action="@{/login}" method="post">
+
+        <input type="email"
+               name="email"
+               placeholder="Enter Email"
+               required/>
+
+        <input type="password"
+               name="password"
+               placeholder="Enter Password"
+               required/>
+
+        <div class="forgot-password-box">
+            <a href="/forgot-password" class="forgot-link">
+                Forgot Password?
+            </a>
+        </div>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <p style="color:red;" th:text="${error}"></p>
+    <p style="color:lightgreen;" th:text="${msg}"></p>
+
+    <p>
+        Don't have an account?
+        <a href="/register">Register</a>
+    </p>
+
+</div>
+
+</body>
+</html>

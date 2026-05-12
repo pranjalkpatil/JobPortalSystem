@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Applied Jobs</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 src="/images/defaultUser.png"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+            </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/applied-jobs">
+            Applied
+        </a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/saved-jobs">
+            Saved
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/recruiter/jobs">
+            My Jobs
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/add-job">
+            Post Job
+        </a>
+
+        <a href="/profile">Profile</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h2>My Applied Jobs</h2>
+
+    <!-- Empty applications message -->
+    <div th:if="${#lists.isEmpty(applications)}"
+         class="empty-state">
+        <h3>No applications yet</h3>
+    </div>
+
+    <table class="job-table"
+           th:if="${!#lists.isEmpty(applications)}">
+
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Status</th>
+        </tr>
+
+        <tr th:each="app : ${applications}">
+
+            <td th:text="${app.job.title}"></td>
+
+            <td th:text="${app.job.company}"></td>
+
+            <td>
+
+                <span th:if="${app.status == 'UNDER REVIEW'}"
+                      class="status-review">
+                    UNDER REVIEW
+                </span>
+
+                <span th:if="${app.status == 'ACCEPTED'}"
+                      class="status-accepted">
+                    ACCEPTED
+                </span>
+
+                <span th:if="${app.status == 'REJECTED'}"
+                      class="status-rejected">
+                    REJECTED
+                </span>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/jobs" class="btn">
+        ⬅ Back
+    </a>
+
+</div>
+
+</body>
+</html>

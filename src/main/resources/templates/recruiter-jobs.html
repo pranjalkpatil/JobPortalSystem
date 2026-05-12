@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Jobs</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 src="/images/defaultUser.png"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+            </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+        <a href="/recruiter/jobs">My Jobs</a>
+        <a href="/add-job">Post Job</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h2>My Posted Jobs</h2>
+
+    <div class="dashboard-stats">
+
+        <div class="stat-card">
+            <h3 th:text="${totalJobs}"></h3>
+            <p>Total Jobs</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 th:text="${totalApplicants}"></h3>
+            <p>Total Applicants</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 th:text="${totalBookmarks}"></h3>
+            <p>Bookmarked</p>
+        </div>
+
+    </div>
+
+    <div th:if="${#lists.isEmpty(jobs)}"
+         class="empty-state">
+
+        <h3>No jobs posted yet</h3>
+        <p>Create your first job posting.</p>
+
+        <br>
+
+        <a href="/add-job" class="btn">
+            + Post Job
+        </a>
+
+    </div>
+
+    <table class="job-table"
+           th:if="${!#lists.isEmpty(jobs)}">
+
+        <tr>
+            <th>Logo</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr th:each="job : ${jobs}">
+
+            <td>
+                <img th:if="${job.companyLogo != null}"
+                     th:src="@{'/company-logos/' + ${job.companyLogo}}"
+                     class="company-logo-small">
+            </td>
+
+            <td>
+                <a th:href="@{'/job/' + ${job.id}}"
+                   th:text="${job.title}">
+                </a>
+            </td>
+
+            <td th:text="${job.company}"></td>
+
+            <td th:text="${job.deadline}"></td>
+
+            <td>
+
+                <a th:href="@{'/applicants/' + ${job.id}}"
+                   class="btn">
+                    Applicants
+                </a>
+
+                <a th:href="@{'/edit-job/' + ${job.id}}"
+                   class="btn-apply">
+                    Edit
+                </a>
+
+                <a th:href="@{'/delete-job/' + ${job.id}}"
+                   class="btn-save"
+                   onclick="return confirm('Are you sure you want to delete this job?');">
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

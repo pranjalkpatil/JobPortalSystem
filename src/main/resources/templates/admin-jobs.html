@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Jobs</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+  <h2>All Jobs</h2>
+
+  <table class="job-table">
+
+    <tr>
+      <th>Title</th>
+      <th>Company</th>
+      <th>Action</th>
+    </tr>
+
+    <tr th:each="job : ${jobs}">
+      <td th:text="${job.title}"></td>
+      <td th:text="${job.company}"></td>
+      <td>
+        <a th:href="@{'/admin/delete-job/' + ${job.id}}"
+           class="btn-save">
+          Delete
+        </a>
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+
+</body>
+</html>

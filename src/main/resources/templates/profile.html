@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Profile</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+  <h2>JobPortal</h2>
+
+  <div class="nav-right">
+
+    <div class="profile-section">
+
+      <img th:if="${user.profilePic != null}"
+           th:src="@{'/profile-pics/' + ${user.profilePic}}"
+           class="profile-img">
+
+      <img th:if="${user.profilePic == null}"
+           th:src="@{/images/defaultUser.png}"
+           class="profile-img">
+
+      <span class="profile-name"
+            th:text="${user.name}">
+      </span>
+
+    </div>
+
+    <a href="/jobs">Jobs</a>
+
+    <a th:if="${user.role == 'USER'}"
+       href="/applied-jobs">Applied</a>
+
+    <a th:if="${user.role == 'USER'}"
+       href="/saved-jobs">Saved</a>
+
+    <a th:if="${user.role == 'RECRUITER'}"
+       href="/recruiter/jobs">My Jobs</a>
+
+    <a th:if="${user.role == 'RECRUITER'}"
+       href="/add-job">Post Job</a>
+
+    <a href="/profile">Profile</a>
+
+    <a href="/logout">Logout</a>
+
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="profile-card">
+
+    <h2>My Profile</h2>
+
+    <div th:if="${success}" class="success">
+      <p th:text="${success}"></p>
+    </div>
+
+    <form th:action="@{/update-profile}"
+          method="post"
+          th:object="${user}"
+          enctype="multipart/form-data">
+
+      <img th:if="${user.profilePic != null}"
+           th:src="@{'/profile-pics/' + ${user.profilePic}}"
+           class="profile-preview">
+
+      <img th:if="${user.profilePic == null}"
+           th:src="@{/images/defaultUser.png}"
+           class="profile-preview">
+
+      <label>Upload Profile Picture</label>
+      <input type="file" name="profileFile" accept="image/*">
+
+      <h3>👤 Basic Information</h3>
+
+      <input type="text"
+             name="name"
+             th:value="${user.name}"
+             placeholder="Full Name"
+             required>
+
+      <input type="email"
+             name="email"
+             th:value="${user.email}"
+             placeholder="Email"
+             required>
+
+      <input type="text"
+             name="phone"
+             th:value="${user.phone}"
+             placeholder="Phone Number">
+
+      <input type="text"
+             name="location"
+             th:value="${user.location}"
+             placeholder="Location">
+
+      <input type="text"
+             name="headline"
+             th:value="${user.headline}"
+             placeholder="Professional Headline">
+
+      <input type="text"
+             name="linkedin"
+             th:value="${user.linkedin}"
+             placeholder="LinkedIn / Portfolio URL">
+
+      <h3>👤 About</h3>
+
+      <textarea name="aboutMe"
+                placeholder="Write a short summary about yourself"
+                rows="4"
+                th:text="${user.aboutMe}">
+      </textarea>
+
+      <h3>🎓 Education</h3>
+
+      <input type="text"
+             name="degree"
+             th:value="${user.degree}"
+             placeholder="Degree">
+
+      <input type="text"
+             name="college"
+             th:value="${user.college}"
+             placeholder="College Name">
+
+      <input type="text"
+             name="graduationYear"
+             th:value="${user.graduationYear}"
+             placeholder="Graduation Year">
+
+      <input type="text"
+             name="percentage"
+             th:value="${user.percentage}"
+             placeholder="CGPA / Percentage">
+
+      <h3>💻 Skills</h3>
+
+      <input type="text"
+             name="skills"
+             th:value="${user.skills}"
+             placeholder="Java, SQL, Spring Boot, React">
+
+      <h3>📂 Experience / Projects</h3>
+
+      <textarea name="experience"
+                placeholder="Internships, projects, work experience"
+                rows="5"
+                th:text="${user.experience}">
+      </textarea>
+
+      <h3>📄 Resume Upload</h3>
+
+      <input type="file"
+             name="resumeFile"
+             accept=".pdf,.doc,.docx">
+
+      <div th:if="${user.resume != null}">
+        <a th:href="@{'/resumes/' + ${user.resume}}"
+           target="_blank">
+          View Uploaded Resume
+        </a>
+      </div>
+
+      <button type="submit">
+        Update Profile
+      </button>
+
+    </form>
+
+    <hr>
+
+    <h3>Change Password</h3>
+
+    <div th:if="${error}" class="error">
+      <p th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/change-password}" method="post">
+
+      <input type="password"
+             name="oldPassword"
+             placeholder="Enter Old Password"
+             required>
+
+      <input type="password"
+             name="newPassword"
+             placeholder="Enter New Password"
+             required>
+
+      <input type="password"
+             name="confirmPassword"
+             placeholder="Confirm New Password"
+             required>
+
+      <button type="submit">
+        Change Password
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

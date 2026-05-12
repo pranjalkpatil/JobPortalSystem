@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Saved Jobs</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 src="/images/defaultUser.png"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+            </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/applied-jobs">
+            Applied
+        </a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/saved-jobs">
+            Saved
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/recruiter/jobs">
+            My Jobs
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/add-job">
+            Post Job
+        </a>
+
+        <a href="/profile">Profile</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h2>Your Saved Jobs</h2>
+
+    <div th:if="${#lists.isEmpty(savedJobs)}"
+         class="empty-state">
+
+        <h3>No saved jobs yet</h3>
+        <p>Save jobs to view them here later.</p>
+
+        <br>
+
+        <a href="/jobs" class="btn">
+            Browse Jobs
+        </a>
+
+    </div>
+
+    <div class="job-container"
+         th:if="${!#lists.isEmpty(savedJobs)}">
+
+        <div class="job-card"
+             th:each="saved : ${savedJobs}">
+
+            <h3>
+                <a th:href="@{'/job/' + ${saved.job.id}}"
+                   th:text="${saved.job.title}">
+                </a>
+            </h3>
+
+            <p th:text="${saved.job.company}"></p>
+
+            <p>
+                📍
+                <span th:text="${saved.job.location}"></span>
+            </p>
+
+            <div class="job-actions">
+
+                <a th:href="@{'/job/' + ${saved.job.id}}"
+                   class="btn-view">
+                    View
+                </a>
+
+                <a th:href="@{'/apply/' + ${saved.job.id}}"
+                   class="btn-apply">
+                    Apply
+                </a>
+
+                <a th:href="@{'/unsave-job/' + ${saved.job.id}}"
+                   class="btn-save"
+                   onclick="return confirm('Remove this saved job?');">
+                    Remove
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

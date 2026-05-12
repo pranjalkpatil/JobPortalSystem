@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Job</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 src="/images/defaultUser.png"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+            </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/applied-jobs">
+            Applied
+        </a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/saved-jobs">
+            Saved
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/recruiter/jobs">
+            My Jobs
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/add-job">
+            Post Job
+        </a>
+
+        <a href="/profile">Profile</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+    <h2>Post a Job</h2>
+
+    <form th:action="@{/save-job}"
+          th:object="${job}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <input type="text"
+               th:field="*{title}"
+               placeholder="Enter Job Title"/>
+
+        <p class="error"
+           th:if="${#fields.hasErrors('title')}"
+           th:errors="*{title}"></p>
+
+        <textarea th:field="*{description}"></textarea>
+
+        <p class="error"
+           th:errors="*{description}"></p>
+
+        <input type="text"
+               th:field="*{company}"
+               placeholder="Company Name"
+               required />
+
+        <input type="text"
+               th:field="*{location}"
+               placeholder="Job Location"
+               required />
+
+        <input type="number" th:field="*{salary}"/>
+
+        <p class="error"
+           th:errors="*{salary}"></p>
+
+        <select th:field="*{category}" required>
+            <option value="">Select Category</option>
+            <option value="Software Development">Software Development</option>
+            <option value="Data Analyst">Data Analyst</option>
+            <option value="UI/UX">UI/UX</option>
+            <option value="Marketing">Marketing</option>
+            <option value="HR">HR</option>
+        </select>
+
+        <select th:field="*{jobType}" required>
+            <option value="">Select Job Type</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Internship">Internship</option>
+            <option value="Remote">Remote</option>
+        </select>
+
+        <select th:field="*{experienceLevel}" required>
+            <option value="">Experience Level</option>
+            <option value="Fresher">Fresher</option>
+            <option value="1-2 Years">1-2 Years</option>
+            <option value="3-5 Years">3-5 Years</option>
+            <option value="5+ Years">5+ Years</option>
+        </select>
+
+        <input type="date"
+               th:field="*{deadline}"
+               required/>
+
+        <label>Company Logo:</label>
+        <input type="file"
+               name="logoFile"
+               accept="image/*">
+        <button type="submit">Post Job</button>
+
+    </form>
+
+    </br>
+    <a href="/home" class="btn">⬅ Back</a>
+</div>
+
+</body>
+</html>

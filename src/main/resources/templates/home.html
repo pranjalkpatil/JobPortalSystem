@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 src="/images/defaultUser.png"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+            </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/applied-jobs">
+            Applied
+        </a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/saved-jobs">
+            Saved
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/recruiter/jobs">
+            My Jobs
+        </a>
+
+        <a th:if="${user.role == 'RECRUITER'}"
+           href="/add-job">
+            Post Job
+        </a>
+
+        <a href="/profile">Profile</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+    <h2>Welcome to Job Portal</h2>
+
+    <p>You are logged in successfully!</p>
+
+    <a href="/logout">Logout</a>
+</div>
+
+</body>
+</html>

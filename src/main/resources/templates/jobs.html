@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jobs</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+
+        <div class="profile-section">
+
+            <img th:if="${user.profilePic != null}"
+                 th:src="@{'/profile-pics/' + ${user.profilePic}}"
+                 class="profile-img">
+
+            <img th:if="${user.profilePic == null}"
+                 th:src="@{/images/defaultUser.png}"
+                 class="profile-img">
+
+            <span class="profile-name"
+                  th:text="${user.name}">
+    </span>
+
+        </div>
+
+        <a href="/jobs">Jobs</a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/applied-jobs">
+            Applied
+        </a>
+
+        <a th:if="${user.role == 'USER'}"
+           href="/saved-jobs">
+            Saved
+        </a>
+
+        <a href="/profile">Profile</a>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h2 class="section-title">
+        Recommended For You
+    </h2>
+
+    <div class="job-grid"
+         th:if="${recommendedJobs != null && !recommendedJobs.isEmpty()}">
+
+        <div class="job-card"
+             th:each="job : ${recommendedJobs}">
+
+            <img th:if="${job.companyLogo != null}"
+                 th:src="@{'/company-logos/' + ${job.companyLogo}}"
+                 class="company-logo">
+
+            <h3>
+                <a th:href="@{'/job/' + ${job.id}}"
+                   th:text="${job.title}">
+                </a>
+            </h3>
+
+            <p th:text="${job.company}"></p>
+            <p th:text="${job.location}"></p>
+            <p>₹ <span th:text="${job.salary}"></span></p>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <h2 class="section-title">
+        Available Jobs
+    </h2>
+
+    <form action="/search" method="get" class="search-bar">
+
+        <input type="text"
+               name="keyword"
+               placeholder="Search job title">
+
+        <input type="text"
+               name="location"
+               placeholder="Location">
+
+        <select name="jobType">
+            <option value="">All Types</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Internship">Internship</option>
+            <option value="Remote">Remote</option>
+        </select>
+
+        <input type="number"
+               name="salary"
+               placeholder="Max Salary">
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    <div class="job-grid">
+
+        <div class="job-card"
+             th:each="job : ${jobs}">
+
+            <img th:if="${job.companyLogo != null}"
+                 th:src="@{'/company-logos/' + ${job.companyLogo}}"
+                 class="company-logo">
+
+            <h3>
+                <a th:href="@{'/job/' + ${job.id}}"
+                   th:text="${job.title}">
+                </a>
+            </h3>
+
+            <p th:text="${job.company}"></p>
+            <p th:text="${job.location}"></p>
+            <p>₹ <span th:text="${job.salary}"></span></p>
+
+            <p>
+                📅 Deadline:
+                <span th:text="${job.deadline}"></span>
+            </p>
+
+            <div>
+
+                <span th:if="${appliedJobIds.contains(job.id)}"
+                      class="applied-badge">
+                    ✓ Applied
+                </span>
+
+                <div class="job-buttons">
+
+                    <form th:if="${!appliedJobIds.contains(job.id)}"
+                          th:action="@{/apply/{id}(id=${job.id})}"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        <input type="file"
+                               name="resume"
+                               accept=".pdf"
+                               required>
+
+                        <button type="submit" class="btn">
+                            Apply
+                        </button>
+                    </form>
+
+                    <a th:href="@{'/save/' + ${job.id}}"
+                       class="btn-save">
+                        ⭐ Save
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

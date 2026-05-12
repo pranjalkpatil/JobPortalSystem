@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Details</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h2>JobPortal</h2>
+
+    <div class="nav-right">
+        <a href="/jobs">Jobs</a>
+        <a th:if="${user.role == 'USER'}" href="/applied-jobs">Applied</a>
+        <a th:if="${user.role == 'USER'}" href="/saved-jobs">Saved</a>
+        <a th:if="${user.role == 'RECRUITER'}" href="/recruiter/jobs">My Jobs</a>
+        <a th:if="${user.role == 'RECRUITER'}" href="/add-job">Post Job</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</div>
+
+<!-- ADD THIS CONTAINER -->
+<div class="container">
+
+    <div class="details-container">
+
+        <div class="job-details-card">
+
+            <img th:if="${job.companyLogo != null}"
+                 th:src="@{'/company-logos/' + ${job.companyLogo}}"
+                 class="company-logo">
+
+            <h1 th:text="${job.title}"></h1>
+
+            <p class="company" th:text="${job.company}"></p>
+
+            <div class="job-meta">
+                <span>📍 <span th:text="${job.location}"></span></span>
+                <span>💰 ₹<span th:text="${job.salary}"></span></span>
+                <span>🏷 <span th:text="${job.category}"></span></span>
+            </div>
+
+            <hr>
+
+            <h3>Description</h3>
+
+            <p th:text="${job.description}"></p>
+
+            <div class="apply-section">
+
+                <form th:action="@{'/apply/' + ${job.id}}"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    <input type="file"
+                           name="resume"
+                           accept=".pdf"
+                           required>
+
+                    <button type="submit" class="btn-apply-big">
+                        Upload Resume & Apply
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

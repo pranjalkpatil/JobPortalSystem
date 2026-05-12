@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Server Error</title>
+</head>
+<body>
+<h1>500 Error Details</h1>
+
+<h3>Status:</h3>
+<p th:text="${status}">No status</p>
+
+<h3>Error:</h3>
+<p th:text="${error}">No error</p>
+
+<h3>Message:</h3>
+<p th:text="${message}">No message</p>
+
+<h3>Exception:</h3>
+<p th:text="${exception}">No exception</p>
+
+<h3>Path:</h3>
+<p th:text="${path}">No path</p>
+
+<h3>Timestamp:</h3>
+<p th:text="${timestamp}">No timestamp</p>
+</body>
+</html>
